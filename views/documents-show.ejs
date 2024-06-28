@@ -1,0 +1,78 @@
+<h1><%= filename %></h1>
+
+<form id="code-dialog" class="pure-form" hx-boost="true" hx-target="#document" method="post" action="/projects/<%= projectId %>/documents/<%= documentId %>/codes">
+  <fieldset>
+    <legend>Add/Edit Qualitiative Code</legend>
+    <span class="pure-form-message" id="selection-text"></span>
+    <input type="text" id="selection-start" name="start" id="selection-start"/>
+    <input type="text" id="selection-end" name="end" id="selection-end"/>
+    <div class="pure-control-group">
+    <label for="qual-code">Code:</label>
+    <input type="text" id="qual-code" name="code" placeholder="Qualitative Code" />
+    </div>
+    <div class="pure-controls">
+    <button type="submit" class="pure-button pure-button-primary">Submit</button>
+    <button id="cancel-tagging" class="pure-button pure-button-danger">Cancel</button>
+    </div>
+  </fieldset>
+</form>
+
+<pre id="doc-<%= documentId %>"><%= text %></pre>
+
+<script>
+  // Use an anonymous function to create new variable scope
+  (function() {
+    var dialog = document.getElementById('code-dialog');
+    var doc = document.getElementById('doc-<%= documentId %>');
+    var cancel = document.getElementById('cancel-tagging');
+
+    var r = Recogito.init({
+        content: doc,
+        widgets: [
+            { widget: 'TAG', vocabulary: <%- JSON.stringify(codes) %> }
+        ]
+    })
+
+    r.setAuthInfo({id: 'https://k-state.edu/<%= username %>', displayName: '<%= username %>'})
+    r.loadAnnotations("/projects/<%- projectId %>/documents/<%- documentId %>/codes");
+
+    r.on('createAnnotation', async(annotation, overrideId) => {
+        const response = await fetch('/projects/<%= projectId %>/documents/<%= documentId %>/codes', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },              
+            body: JSON.stringify(annotation),
+            mode: "same-origin"
+        });
+
+        if(response.status === 200) overrideId(await response.json());
+    });
+
+    r.on('updateAnnotation', async (annotation) => {
+        const response = await fetch('/projects/<%= projectId %>/documents/<%= documentId %>/codes', {
+            method: 'PATCH',
+            headers: {
+                "Content-Type": "application/json"
+            },              
+            body: JSON.stringify(annotation),
+            mode: "same-origin"
+        });
+    })
+
+    r.on('deleteAnnotation', async (annotation) => {
+        const response = await fetch('/projects/<%= projectId %>/documents/<%= documentId %>/codes', {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json"
+            },              
+            body: JSON.stringify(annotation),
+            mode: "same-origin"
+        });
+    })
+
+    window.r = r;
+
+  })();
+    
+</script>

@@ -1,0 +1,89 @@
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+pre {
+  white-space: pre-line;
+}
+
+/* LAYOUT CSS */
+.pure-img-responsive {
+  max-width: 100%;
+  height: auto;
+}
+
+#layout {
+  padding: 0;
+}
+
+.header {
+  background-color: #a3f1c6;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.header > .pure-menu {
+  width: 100%;
+  padding: 0 2rem;
+}
+
+.sidebar {
+  padding: 2rem;
+  background: rgb(61, 79, 93);
+  color: #fff;
+  min-height: 100vh;
+}
+
+.centered {
+  margin: 0 auto;
+  max-width: 640px;
+}
+
+#code-dialog {
+  position: fixed;
+  top: auto;
+  left: 50%;
+  margin-left: -200px;
+  width: 400px;
+  background-color: white;
+  border: 1px solid gray;
+  box-shadow: #777 0.5rem 0.5rem 0.5rem;
+  padding: 2rem;
+  display: none;
+}
+
+#document {
+  border: rgb(89, 102, 68);
+  margin: 0.5rem;
+  padding: 2rem;
+}
+
+.document-list {
+  width: 100%;
+  border: 1px solid gray;
+  background-color: rgb(110, 109, 109);
+}
+
+.document-list .pure-menu-item {
+  cursor: pointer;
+  overflow: clip;
+  padding: 0.5rem;
+}
+
+.document-list .pure-menu-item:hover {
+  color:burlywood; 
+}
+
+.upload-docs {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid gray;
+  padding: 0.5rem;
+  background-color: rgb(110, 109, 109);
+}

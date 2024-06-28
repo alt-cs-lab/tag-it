@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm
+    volumes:
+      - ../..:/workspaces:cached
+    network_mode: service:neo
+    command: sleep infinity
+    environment: 
+      - NEO4J_AUTH=neo4j/dump
+      - CAS_SERVICE_HOST=http://localhost:3000/
+      - CAS_HOST=https://testcas.cs.ksu.edu/
+      
+  neo:
+      # The image to use
+      image: neo4j:latest
+      # map the ports so we can check the db server is up
+      ports: 
+          - 7474:7474
+          - 7687:7687
+      # mounting a named volume to the container to track db data
+      volumes:
+          - neo4j-data:/data/
+      environment:
+        - NEO4J_AUTH=none
+
+volumes:
+  neo4j-data:

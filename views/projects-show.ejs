@@ -1,0 +1,24 @@
+<%- include('./header', {username}) %>
+
+<div id="layout" class="pure-g">
+    
+  <div class="pure-u-1 pure-u-md-1-3">
+    <div class="sidebar">
+      <h1><%= project.name %></h1>
+      <hr/>
+      <%- include('documents-list', {projectId: project.projectId, documents: project.documents}) %>
+      <hr/> 
+      <%- include('upload-documents', {projectId: project.projectId}) %>
+    </div>    
+  </div>
+
+  <div class="pure-u-1 pure-u-md-2-3">
+    <div id="document">
+      Select a document to view
+    </div>
+  </div>
+
+</div>
+
+<%- include('./footer') %>
+

@@ -1,0 +1,5 @@
+<%- include("./header.ejs", {username}) %>
+  <div id="main" hx-get="<%= locals.content ? locals.content : '/projects' %>" hx-trigger="load">
+    Unable to load content. Is JavaScript or AJAX disabled?
+  </div>
+<%- include("./footer.ejs") %>

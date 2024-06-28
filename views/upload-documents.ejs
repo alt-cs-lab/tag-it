@@ -1,0 +1,9 @@
+<form class="upload-docs pure-form pure-form-stacked" action="/projects/<%- projectId %>/documents" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <legend>Add Additional Document(s)</legend>
+        <label>Please select the file(s) to upload</label>
+        <input type="file" name="files" accept="pdf, docx, zip" multiple/>
+        <span class="pure-form-message">Supported File Types are PDF, DOCX, and ZIP</span>
+        <input type="submit" value="Upload" class="pure-button"/>
+    </fieldset>    
+</form>
