@@ -29,9 +29,16 @@ router.get('/:projectId', async function(req, res, next) {
   const {records, summary} = await neo4j.executeRead(async tx => {
     //return tx.run('MATCH (p:Project) WHERE p.projectId = $projectId RETURN p.name AS name, p.projectId AS projectId LIMIT 1', {projectId});
     return tx.run(`
-        MATCH (p:Project {projectId: $projectId})
-        MATCH (d:Document)-[BELONGS_TO]->(p) 
-        RETURN p,d;
+        MATCH (p:Project {projectId: $projectId}) 
+        RETURN p AS project, 
+          COLLECT {
+            MATCH (d:Document)-[:BELONGS_TO]->(p)
+            RETURN d
+          } AS documents,
+          COLLECT {
+              MATCH (u:User) -[:WORKING_ON]->(p)
+              RETURN u
+          } AS users;
       `,
       { projectId }
     )
@@ -40,15 +47,20 @@ router.get('/:projectId', async function(req, res, next) {
   if(records.length == 0) return res.sendStatus(404);
 
   // Extract project data from result 
-  let project = records[0].get('p').properties;
-  
+  let project = records[0].get('project').properties;
+  project.documents = records[0].get('documents').map(d => d.properties);
+  project.users = records[0].get('users').map(u => u.properties);
+
+  console.log({...project})
+
+  /*
   // Add document data to project
   project.documents = [];
   records.forEach(record => {
     let doc = record.get('d');
     project.documents.push(doc.properties);
   });
-
+*/
   res.render('projects-show', {username, project});
 })
 

@@ -7,14 +7,26 @@ const router = express.Router();
 /* GET codes for document */
 router.get('/projects/:projectId/documents/:documentId/codes', async function(req, res) {
     const neo4j = req.app.get('neo4j');
+    const {username} = req.session;
     const {projectId, documentId} = req.params;
-    // Retrieve all codes in the document
-    const result = await neo4j.executeRead(tx => {
+    let result;
+    if(false) { //TODO: Add reconcilliation mode}
+      // Retrieve all codes in the document
+      result = await neo4j.executeRead(tx => {
+          return tx.run(`
+              MATCH (Document {documentId: $documentId}) -[tag:TAGGED]-> (code:Code)
+              RETURN tag.tagId AS tagId, tag.start AS start, tag.end as end, tag.text AS text, code.name AS name, tag.by AS username;
+          `, {documentId});
+      })
+    } else {
+      // Retrieve all codes in the document created by the current user
+      result = await neo4j.executeRead(tx => {
         return tx.run(`
-            MATCH (Document {documentId: $documentId}) -[tag:TAGGED]-> (code:Code)
+            MATCH (Document {documentId: $documentId}) -[tag:TAGGED {by: $username}]-> (code:Code)
             RETURN tag.tagId AS tagId, tag.start AS start, tag.end as end, tag.text AS text, code.name AS name, tag.by AS username;
-        `, {documentId});
-    })
+        `, {documentId, username});
+      })
+    }
     // Package the codes as annotations
     const annotations = result.records.map(row => {
         let tagId = row.get('tagId');

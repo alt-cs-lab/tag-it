@@ -64,10 +64,12 @@ pre {
   padding: 2rem;
 }
 
-.document-list {
+.document-list, .user-list {
+  box-sizing: border-box;
   width: 100%;
   border: 1px solid gray;
   background-color: rgb(110, 109, 109);
+  padding: 0 1rem;
 }
 
 .document-list .pure-menu-item {

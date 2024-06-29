@@ -1,5 +1,5 @@
 <div class="document-list pure-menu">
-  <h2 class="pure-menu-heading">Documents</h2>
+  <h2>Documents</h2>
   <ul class="pure-menu-list">
       <% documents.forEach((document) => { %>
         <li hx-get="/projects/<%- projectId %>/documents/<%- document.documentId %>" hx-target="#document" class="pure-menu-item">

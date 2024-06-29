@@ -72,7 +72,7 @@ app.use(async (req, res, next) => {
 
 // define protected routes
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use(usersRouter);
 app.use(codesRouter);
 app.use(documentsRouter);
 app.use('/projects', projectsRouter);

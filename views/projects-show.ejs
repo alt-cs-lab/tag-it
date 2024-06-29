@@ -7,8 +7,10 @@
       <h1><%= project.name %></h1>
       <hr/>
       <%- include('documents-list', {projectId: project.projectId, documents: project.documents}) %>
-      <hr/> 
       <%- include('upload-documents', {projectId: project.projectId}) %>
+      <hr/> 
+      <%- include('users-list', {users: project.users}) %>
+      <%- include('add-user', {projectId: project.projectId}) %>
     </div>    
   </div>
 
