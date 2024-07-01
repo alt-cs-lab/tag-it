@@ -51,7 +51,7 @@ router.get('/:projectId', async function(req, res, next) {
   project.documents = records[0].get('documents').map(d => d.properties);
   project.users = records[0].get('users').map(u => u.properties);
 
-  console.log({...project})
+  // console.log({...project})
 
   /*
   // Add document data to project
