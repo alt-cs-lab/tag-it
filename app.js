@@ -16,6 +16,11 @@ const codesRouter = require('./routes/codes');
 
 const app = express();
 
+if (app.get('env') === 'production') {
+  // trust first proxy (Traefik)
+  app.set('trust proxy', 1);
+}
+
 // database setup
 const db_host = process.env.NEO4J_HOST || 'neo'
 const db_port = process.env.NEO4J_PORT || '7687'
