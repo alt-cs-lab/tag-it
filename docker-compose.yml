@@ -1,0 +1,29 @@
+services:
+  tagit:
+    image: tagit
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+      SESSION_SECRET: thisisasecret
+      SECURE_SESSION: "false"
+      NEO4J_HOST: neo
+      NEO4J_PORT: 7687
+      NEO4J_AUTH: neo4j/neo4j_password
+      CAS_SERVICE_HOST: http://localhost:3000
+      CAS_HOST: https://testcas.cs.ksu.edu
+    ports:
+      - 3000:3000
+
+  neo:
+    image: neo4j:latest
+    environment:
+      NEO4J_AUTH: neo4j/neo4j_password
+    # persist data
+    volumes:
+     - neo4j_data:/data:rw
+
+volumes:
+  tagit_uploads:
+  neo4j_data:

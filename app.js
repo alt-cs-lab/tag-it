@@ -16,14 +16,24 @@ const codesRouter = require('./routes/codes');
 
 const app = express();
 
+// database setup
+const db_host = process.env.NEO4J_HOST || 'neo'
+const db_port = process.env.NEO4J_PORT || '7687'
+const auth = (process.env.NEO4J_AUTH || "neo4j/neo4j").split('/');
+const driver = neo4j.driver('bolt://'+db_host+':'+db_port, neo4j.auth.basic(auth[0], auth[1]));
+app.set('neo4j', driver.session());
+
+let Neo4jStore = require('connect-neo4j')(session)
 // session setup
 app.use(session({
+  // Neo4j store
+  store: new Neo4jStore({client: driver}),
   // We want a unique session secret for the application, 
   // ideally stored as an environment variable.
-  secret: process.SESSION_SECRET || 'keyboard cat',
+  secret: process.env.SESSION_SECRET || 'keyboard cat',
   // resave forces the session to be written back to the 
   // session store when no changes have been made
-  resave: false,
+  resave: true,
   // saveUninitialized allows new and unmodified sessions
   // to be saved to the session store.  Since we're using 
   // the username to determine login status, `true` is fine.
@@ -31,14 +41,10 @@ app.use(session({
   // Cookie-specific settings
   cookie: { 
     // secure requires the client to be using https
-    secure: process.SECURE_SESSION 
+    secure: process.env.SECURE_SESSION === 'true',
   }
 }));
 
-// database setup
-const auth = process.env.NEO4J_AUTH.split('/');
-const driver = neo4j.driver('bolt://neo:7687');
-app.set('neo4j', driver.session());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

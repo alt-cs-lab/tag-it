@@ -53,6 +53,8 @@ router.get('/ticket', async (req, res) => {
       // populate the user in the database
       await neo4j.run('MERGE (user:User {username: $username})', {username: match[1]});
       // Then redirect them to the landing page 
+      // save session
+      await req.session.save();
       res.redirect('/')
     } else {
       res.status(403).send('Authorization failed');
