@@ -29,6 +29,7 @@ COPY --chown==node:node . .
 
 # Set Uploads Directory
 RUN mkdir -p /usr/src/app/uploads
+RUN chown node:node /usr/src/app/uploads
 RUN chmod g+rw /usr/src/app/uploads
 
 # Run the application as a non-root user.
