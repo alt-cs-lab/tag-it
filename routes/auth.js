@@ -5,7 +5,7 @@ const url = require('url');
 // The serviceHost (our server) and casHost (the CAS server)
 // hostnames, we nee to build urls.  Since we pass our serviceHost
 // as a url component in the search string, we need to url-encode it.
-var serviceHost = process.env.CAS_SERVICE_HOST;
+var serviceHost = (process.env.CODESPACE_NAME) ? `https://${process.env.CODESPACE_NAME}-{process.env.PORT}.app.github.dev/` : process.env.CAS_SERVICE_HOST;
 // var serviceUrl = encodeURIComponent(path.join(serviceHost, 'ticket'));
 var serviceUrl = serviceHost + url.format({ pathname: 'ticket'});
 var casHost = process.env.CAS_HOST;
