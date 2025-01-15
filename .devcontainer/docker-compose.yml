@@ -7,9 +7,12 @@ services:
     network_mode: service:neo
     command: sleep infinity
     environment: 
+      - SERVER_PORT=5178
       - NEO4J_AUTH=neo4j/dump
-      - CAS_SERVICE_HOST=http://localhost:3000/
-      - CAS_HOST=https://testcas.cs.ksu.edu/
+      - CAS_SERVICE_HOST=http://localhost:5178
+      - CAS_HOST=https://testcas.cs.ksu.edu
+      - TOKEN_SECRET=insecuresecret
+      - FORCE_AUTH=true
       
   neo:
       # The image to use
